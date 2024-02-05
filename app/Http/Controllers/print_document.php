@@ -66,6 +66,7 @@ class print_document extends Controller
         foreach ($filteredDataPDF as $loopPDF) {
             # code...
             // $pdfContents[] = $this->generateDynamicPdf($loopPDF);
+            print_r($loopPDF);
             $pdfContents[] = $this->convertPdfToImage($loopPDF);
         }
         // @dd($pdfContents);
