@@ -27,7 +27,7 @@
             <tr>
                 <td>Status Pekerjaan</td>
                 <td>:</td>
-                <td>{{ $status }}</td>
+                <td>{{ $status_pekerjaan }}</td>
             </tr>
             <tr>
                 <td>Teknisi Terlibat</td>
@@ -42,7 +42,7 @@
             <tr>
                 <td>Lokasi Pekerjaan</td>
                 <td>:</td>
-                <td>{{ $lokasi }}</td>
+                <td>{{ $lokasi_pekerjaan }}</td>
             </tr>
         </tbody>
     </table>
@@ -53,47 +53,77 @@
                 <th>Jenis Pengeluaran</th>
                 <th>Item</th>
                 <th>Jumlah Pengeluaran</th>
-                {{-- <th>Nama Image</th>
-                <th>Link Image</th> --}}
                 <th>Bukti</th>
             </tr>
         </thead>
         <tbody>
+            @php
+                $currentDate = null;
+            @endphp
             @foreach ($all_pengeluaran as $tanggal => $jenisCollection)
-                @php
-                    $firstDate = true;
-                @endphp
                 @foreach ($jenisCollection as $jenis => $items)
-                    @foreach ($items as $index => $item)
+                    @for ($i = 0; $i < count($items); $i++)
                         <tr>
-                            @if ($firstDate)
-                                <td name="tanggal">{{ $item->tanggal_pengeluaran }}</td>
+                            @if ($currentDate != $items[$i]->tanggal_pengeluaran)
+                                <td rowspan="{{ count($items) }}">
+                                    {{ date('d/m/Y', strtotime($items[$i]->tanggal_pengeluaran)) }}</td>
                                 @php
-                                    $firstDate = false;
+                                    $currentDate = $items[$i]->tanggal_pengeluaran;
                                 @endphp
                             @else
                                 <td></td>
                             @endif
-                            @if ($index === 0)
-                                <td rowspan="{{ count($items) }}">{{ $item->jenis_pengeluaran }}</td>
+                            @if ($i === 0)
+                                <td rowspan="{{ count($items) }}">{{ $items[$i]->jenis_pengeluaran }}</td>
                             @endif
-                            <td>{{ $item->item }}</td>
-                            <td>{{number_format($item->jumlah_pengeluaran, 0, '.', '.') }}</td>
-                            {{-- <td>{{ $item->nama_image }}</td>
-                            <td>{{ $item->link_image }}</td> --}}
-                            @if ($item->link_image != null)
+                            <td>{{ $items[$i]->item }}</td>
+                            <td style="text-align: right; padding-right: 10px;">
+                                {{ number_format($items[$i]->jumlah_pengeluaran, 0, '.', '.') }}</td>
+                            @if ($items[$i]->link_image != null)
                                 <td>Ada</td>
                             @else
                                 <td>Tidak Ada</td>
                             @endif
                         </tr>
-                    @endforeach
+                    @endfor
                 @endforeach
             @endforeach
+            @php
+                $indexThisLoop = 0;
+            @endphp
+            @foreach ($jenis_pengeluaran as $loop_pengeluaran)
+                <tr>
+                    <td colspan="3">{{ $loop_pengeluaran }}</td>
+                    <td colspan="2" style="text-align: right; padding-right: 10px;">
+                        {{ number_format($total_jenis_pengeluaran[$indexThisLoop], 0, '.', '.') }}
+                    </td>
+                </tr>
+                @php
+                    $indexThisLoop = $indexThisLoop + 1;
+                @endphp
+            @endforeach
+            <tr>
+                <td colspan="3">Total</td>
+                <td colspan="2" style="text-align: right; padding-right: 10px;">
+                    {{ number_format($total_pengeluaran, 0, '.', '.') }}</td>
+            </tr>
         </tbody>
     </table>
-
-
+    <div style="page-break-before: always;"></div>
+    @foreach ($all_pengeluaran as $tanggal => $jenisCollection)
+        @foreach ($jenisCollection as $jenis => $items)
+            @for ($i = 0; $i < count($items); $i++)
+                @if ($items[$i]->link_image != null)
+                    <img src="{{ $items[$i]->link_image }}" alt=""
+                        style="height: 300px; width: auto; max-width: 500px;" loading="lazy">
+                    {{-- <div>{{$items[$i]->link_image}}</div> --}}
+                @endif
+            @endfor
+        @endforeach
+    @endforeach
+    @foreach ($pdfContents as $pdfContent)
+        <img src="{{ $pdfContent }}" alt="PDF Image" style="width: 100%;">
+    @endforeach
 </body>
 
 </html>
