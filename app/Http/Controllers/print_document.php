@@ -6,6 +6,7 @@ use App\Models\jenis_pengeluaran;
 use App\Models\status_kapal_pekerjaan;
 use Illuminate\Http\Request;
 use Mpdf\Mpdf;
+use PhpParser\Node\Stmt\Break_;
 use Spatie\PdfToImage\Pdf;
 
 class print_document extends Controller
@@ -66,8 +67,8 @@ class print_document extends Controller
         foreach ($filteredDataPDF as $loopPDF) {
             # code...
             // $pdfContents[] = $this->generateDynamicPdf($loopPDF);
-            print_r($loopPDF);
-            $pdfContents[] = $this->convertPdfToImage($loopPDF);
+            // print_r($loopPDF);
+            // $pdfContents[] = $this->convertPdfToImage($loopPDF);
         }
         // @dd($pdfContents);
         // @dd($filteredDataPDF);
@@ -139,7 +140,8 @@ class print_document extends Controller
             'total_jenis_pengeluaran',
             'all_pengeluaran',
             'total_pengeluaran',
-            'pdfContents'
+            'pdfContents',
+            'filteredDataPDF'
         ));
 
     }

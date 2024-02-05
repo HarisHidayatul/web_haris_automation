@@ -121,8 +121,12 @@
             @endfor
         @endforeach
     @endforeach
+    <h3>PDF Files</h3>
+    @foreach ($filteredDataPDF as $loopPDF)
+        <div>{{$loopPDF}}</div>
+    @endforeach
     @foreach ($pdfContents as $pdfContent)
-        <img src="{{ $pdfContent }}" alt="PDF Image" style="width: 100%;">
+        {{-- <img src="{{ $pdfContent }}" alt="PDF Image" style="width: 100%;"> --}}
     @endforeach
 </body>
 
