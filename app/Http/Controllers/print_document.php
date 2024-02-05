@@ -143,7 +143,7 @@ class print_document extends Controller
 
     }
 
-    private function convertPdfToImage($pdfContent)
+    public function convertPdfToImage($pdfContent)
     {
         // Simpan PDF ke file sementara
         $pdfPath = tempnam(sys_get_temp_dir(), 'pdf');
@@ -151,6 +151,7 @@ class print_document extends Controller
 
         // Konversi PDF menjadi gambar menggunakan spatie/pdf-to-image
         $pdf = new Pdf($pdfPath);
+        $pdf->setOutputFormat('png'); // Ubah format keluaran sesuai kebutuhan
         $imagePath = $pdf->saveImage(sys_get_temp_dir());
 
         // Hapus file PDF sementara
