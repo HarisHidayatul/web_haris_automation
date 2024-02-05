@@ -72,6 +72,6 @@ class status_kapal_pekerjaan extends Model
 
     public function users()
     {
-        return $this->hasManyThrough(User::class, team_keberangkatan::class, 'status_kapal_pekerjaan_id', 'id', 'id', 'user_id');
+        return $this->hasManyThrough(user::class, team_keberangkatan::class, 'status_kapal_pekerjaan_id', 'id', 'id', 'user_id');
     }
 }
